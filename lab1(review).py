@@ -89,12 +89,12 @@
 
 ####QUESTION 15.a
 
-def foo(numbers): 
-    result = [] 
-    for i in range(len(numbers)): 
-        sub = sorted(numbers[i:]) 
-        result.append(sub[0]) 
-    return result
+# def foo(numbers): 
+#     result = [] 
+#     for i in range(len(numbers)): 
+#         sub = sorted(numbers[i:]) 
+#         result.append(sub[0]) 
+#     return result
 
 # The worst-case time complexity of this function is: O(n^2 log n)
 
@@ -106,3 +106,37 @@ def foo(numbers):
 # Your implementation must be such that a list of numbers with 105 elements can be processed in less than a second.
 
 # Hint: if your solution calls the sorted function or the sort method of a list, is it really going to have the right asymptotic complexity?
+
+def foo(numbers): 
+    if len(numbers) == 0:
+        return []
+
+    sorted_numbers = sorted(numbers)
+    return [sorted_numbers[0]] + foo(sorted_numbers[1:])
+
+foo(list(range(10**5)))
+print("OK")
+
+foo(list(range(10**5)))
+print("OK")
+
+	
+
+# OK
+
+	
+
+# *** RUN TIME ERROR(S) ***
+# Traceback (most recent call last):
+#   File "__source.py", line 17, in <module>
+#     foo(list(range(10**5)))
+#   File "__source.py", line 6, in foo
+#     return [sorted_numbers[0]] + foo(sorted_numbers[1:])
+#   File "__source.py", line 6, in foo
+#     return [sorted_numbers[0]] + foo(sorted_numbers[1:])
+#   File "__source.py", line 6, in foo
+#     return [sorted_numbers[0]] + foo(sorted_numbers[1:])
+#   [Previous line repeated 941 more times]
+#   File "__source.py", line 5, in foo
+#     sorted_numbers = sorted(numbers)
+# MemoryError
