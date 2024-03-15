@@ -65,6 +65,29 @@ def adjacency_list(graph_str):
 #     print(i, sorted(graph_transposed_adj_list[i]))
 
 ####QUESTION 3
+# Write a function is_strongly_connected(adj_list) that takes the adjacency list 
+# of a graph which has at least one vertex, and returns true if the graph is strongly connected, false otherwise.
+
 def is_strongly_connected(adj_list):
+    state = [-1] * len(adj_list)
+    state[adj_list[0]] = 0
     for source, neighbours in adj_list:
-        
+        if state[source] == -1:
+            state[source] = 0
+
+# def dfs_tree(adj_list, start):
+#     vertices = len(adj_list)
+#     state = [-1] * vertices
+#     parent = [None] * vertices
+#     state[start] = 0
+
+#     def dfs_loop(u):
+#         for v, weight in adj_list[u]:
+#             if state[v] == -1:
+#                 state[v] = 0
+#                 parent[v] = u
+#                 dfs_loop(v)
+#         state[u] = 1
+#     dfs_loop(start)
+#     return parent
+
