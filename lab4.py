@@ -1,3 +1,5 @@
+import math
+
 def adjacency_list(graph_str):
 
     if len(graph_str) == 0:
@@ -11,8 +13,6 @@ def adjacency_list(graph_str):
     vertices = int(list_graph_str[0][1])
 
     result = [[] for _ in range(vertices)]
-
-    
     for line in list_graph_str[1:]:
         source = int(line[0])
         b = int(line[1])
@@ -32,6 +32,39 @@ def adjacency_list(graph_str):
 # For this question, the function adjacency_list is available on the server. 
 # You do not have to provide your own copy of this function (however, you can if you wish so).
 
+# def dfs_tree(adj_list, start):
+#     vertices = len(adj_list)
+#     state = ['undiscovered'] * vertices
+#     parent = [None] * vertices
+#     state[start] = 0
+
+#     topological_stack = []
+
+#     def dfs_loop(u):
+#         for v, weight in adj_list[u]:
+#             if state[v] == 'undiscovered':
+#                 state[v] = 'discovered'
+#                 parent[v] = u
+#                 dfs_loop(v)
+#         topological_stack.append(u)
+#         state[u] = 'processed'
+#     dfs_loop(start)
+
+#     print(state)
+#     print(topological_stack)
+#     return parent
+
+# graph_string = """\
+# D 5
+# 0 2
+# 1 2
+# 2 4
+# 2 3
+# """
+
+# adj_list = adjacency_list(graph_string)
+
+# print(dfs_tree(adj_list, 0))
 
 # def transpose(adj_list):
 #         if len(adj_list) == 0:
@@ -45,7 +78,6 @@ def adjacency_list(graph_str):
 
 #         return result
 
- 	
 
 # graph_string = """\
 # U 7
@@ -68,26 +100,32 @@ def adjacency_list(graph_str):
 # Write a function is_strongly_connected(adj_list) that takes the adjacency list 
 # of a graph which has at least one vertex, and returns true if the graph is strongly connected, false otherwise.
 
-def is_strongly_connected(adj_list):
-    state = [-1] * len(adj_list)
-    state[adj_list[0]] = 0
-    for source, neighbours in adj_list:
-        if state[source] == -1:
-            state[source] = 0
 
-# def dfs_tree(adj_list, start):
-#     vertices = len(adj_list)
-#     state = [-1] * vertices
-#     parent = [None] * vertices
-#     state[start] = 0
 
-#     def dfs_loop(u):
-#         for v, weight in adj_list[u]:
-#             if state[v] == -1:
-#                 state[v] = 0
-#                 parent[v] = u
-#                 dfs_loop(v)
-#         state[u] = 1
-#     dfs_loop(start)
-#     return parent
+# def is_strongly_connected(adj_list):
+#      for i in range(0, len(adj_list) - 1):
+#           state_1 = dfs_tree(adj_list, i)
+#           if 'undiscovered' in state_1:
+#                return False
+#           else:
+#             state_2 = dfs_tree(transpose(adj_list), i)
+#             if 'undiscovered' in state_2:
+#                 return False
+#             return True
+    
 
+####    ####    ####    PRIMS ALGO    ####    ####
+
+####QUESTION 8
+def next_vertex(intree, distance):
+
+def prim(adj_list, s):
+    vertices = len(adj_list)
+    in_tree = [False] * vertices
+    distance = [math.inf] * vertices
+    parent = [None] * vertices
+    
+    distance[s] = 0
+
+    while not all(in_tree):
+        u = 
