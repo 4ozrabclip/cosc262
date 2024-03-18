@@ -79,18 +79,18 @@ def adjacency_list(graph_str):
 #         return result
 
 
-# graph_string = """\
-# U 7
-# 1 2
-# 1 5
-# 1 6
-# 2 3
-# 2 5
-# 3 4
-# 4 5
-# """
+graph_string = """\
+U 7
+1 2
+1 5
+1 6
+2 3
+2 5
+3 4
+4 5
+"""
 
-# graph_adj_list = adjacency_list(graph_string)
+graph_adj_list = adjacency_list(graph_string)
 # print(graph_adj_list)
 # graph_transposed_adj_list = transpose(graph_adj_list)
 # for i in range(len(graph_transposed_adj_list)):
@@ -118,9 +118,21 @@ def adjacency_list(graph_str):
 
 ####QUESTION 8
 def next_vertex(intree, distance):
+    closest = None
+    min_value = math.inf
+
+    for v in range(len(intree)):
+        if not intree[v] and distance[v] < min_value:
+            closest = v
+            min_value = distance[v]
+
+    return closest
 
 def prim(adj_list, s):
     vertices = len(adj_list)
+    if vertices == 0:
+        return [], []
+    
     in_tree = [False] * vertices
     distance = [math.inf] * vertices
     parent = [None] * vertices
@@ -128,4 +140,15 @@ def prim(adj_list, s):
     distance[s] = 0
 
     while not all(in_tree):
-        u = 
+        u = next_vertex(in_tree, distance)
+        in_tree[u] = True
+        for v, weight in adj_list[u]:
+            if not in_tree[v] and weight < distance[v]:
+                distance[v] = weight
+                parent[v] = u
+
+    print(in_tree)
+
+    return parent, distance
+
+print(prim(graph_adj_list, 0))
