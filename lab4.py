@@ -119,23 +119,23 @@ graph_adj_list = adjacency_list(graph_string)
 
 def next_vertex(in_tree, distance):
     closest = None
-    min_value = math.inf
+    def_value = math.inf
 
     for v in range(len(in_tree)):
-        if not in_tree[v] and distance[v] <= min_value:
+        if not in_tree[v] and distance[v] <= def_value:
             closest = v
-            min_value = distance[v]
+            def_value = distance[v]
 
     return closest
 
-in_tree = [True, True, True, False, True]####test next_vertex
-distance = [math.inf, 0, math.inf, math.inf, math.inf]####test next_vertex
-print(next_vertex(in_tree, distance))####test next_vertex
+# in_tree = [True, True, True, False, True]####test next_vertex
+# distance = [math.inf, 0, math.inf, math.inf, math.inf]####test next_vertex
+# print(next_vertex(in_tree, distance))####test next_vertex
 # def prim(adj_list, s):
 #     vertices = len(adj_list)
 #     if vertices == 0:
 #         return [], []
-    
+
 #     in_tree = [False] * vertices
 #     distance = [math.inf] * vertices
 #     parent = [None] * vertices
@@ -155,3 +155,31 @@ print(next_vertex(in_tree, distance))####test next_vertex
 #     return parent, distance
 
 # print(prim(graph_adj_list, 0))
+
+
+def dijkstra(adj_list, start):
+    n = len(adj_list)
+    in_tree = [False] * n
+    d = [math.inf] * n
+    parent = [None] * n
+    
+    d[start] = 0
+
+    while not all(in_tree):
+        u = next_vertex(in_tree, d)
+        in_tree[u] = True
+        for v, w in adj_list[u]:
+            if not in_tree[v] and (d[u] + w) < d[v]:
+                d[v] = d[u] + w 
+                parent[v] = u
+    return parent, d
+
+graph_string = """\
+U 4 W
+0 2 5
+0 3 2
+3 2 2
+"""
+
+print(dijkstra(adjacency_list(graph_string), 0))
+print(dijkstra(adjacency_list(graph_string), 2))
