@@ -114,41 +114,44 @@ graph_adj_list = adjacency_list(graph_string)
 #             return True
     
 
-####    ####    ####    PRIMS ALGO    ####    ####
+####    ####    ####    PRIMS ALGO    ####    ####     ####     ####    ####      DJIKSTRAS ALGO      ####    ####    ####      ####    ####
 
-####QUESTION 8
-def next_vertex(intree, distance):
+
+def next_vertex(in_tree, distance):
     closest = None
     min_value = math.inf
 
-    for v in range(len(intree)):
-        if not intree[v] and distance[v] < min_value:
+    for v in range(len(in_tree)):
+        if not in_tree[v] and distance[v] <= min_value:
             closest = v
             min_value = distance[v]
 
     return closest
 
-def prim(adj_list, s):
-    vertices = len(adj_list)
-    if vertices == 0:
-        return [], []
+in_tree = [True, True, True, False, True]####test next_vertex
+distance = [math.inf, 0, math.inf, math.inf, math.inf]####test next_vertex
+print(next_vertex(in_tree, distance))####test next_vertex
+# def prim(adj_list, s):
+#     vertices = len(adj_list)
+#     if vertices == 0:
+#         return [], []
     
-    in_tree = [False] * vertices
-    distance = [math.inf] * vertices
-    parent = [None] * vertices
+#     in_tree = [False] * vertices
+#     distance = [math.inf] * vertices
+#     parent = [None] * vertices
     
-    distance[s] = 0
+#     distance[s] = 0
 
-    while not all(in_tree):
-        u = next_vertex(in_tree, distance)
-        in_tree[u] = True
-        for v, weight in adj_list[u]:
-            if not in_tree[v] and weight < distance[v]:
-                distance[v] = weight
-                parent[v] = u
+#     while not all(in_tree):
+#         u = next_vertex(in_tree, distance)
+#         in_tree[u] = True
+#         for v, weight in adj_list[u]:
+#             if not in_tree[v] and weight < distance[v]:
+#                 distance[v] = weight
+#                 parent[v] = u
 
-    print(in_tree)
+#     print(in_tree)
 
-    return parent, distance
+#     return parent, distance
 
-print(prim(graph_adj_list, 0))
+# print(prim(graph_adj_list, 0))
