@@ -61,7 +61,7 @@
 
 
 ############################### QUESTION 2 ########################################################################################################
-from collections import deque    
+from collections import deque
 def adjacency_list(data):
         if len(data) == 0:
             return []
@@ -75,6 +75,7 @@ def adjacency_list(data):
             source = int(line[0])
             dest = int(line[1])
             adj_list[source].append(dest)
+            adj_list[dest].append((source))
 
         return adj_list
 
@@ -86,6 +87,17 @@ def bfs_loop(adj_list, Q, state):
                 state[v] = "discovered"
                 Q.append(v)
 
+def transpose(adj_list):
+        if len(adj_list) == 0:
+            return []
+            
+        result = [[] for _ in range(len(adj_list))]
+
+        for source, neighbours in enumerate(adj_list):
+             for neighbour, w in neighbours:
+                  result[neighbour].append((source, w))
+        return result
+
 def bubbles(physical_contact_info):
     adj_list = adjacency_list(physical_contact_info)
     n = len(adj_list)
@@ -93,7 +105,7 @@ def bubbles(physical_contact_info):
     Q = deque()
     components = []
 
-    for i in range(0, n-1):
+    for i in range(n):
         if state[i] == 'undiscovered':
             prevstate = state.copy()
             state[i] = 'discovered'
@@ -104,10 +116,6 @@ def bubbles(physical_contact_info):
     return components
 
 
-
- 	
-
- 	
 
 physical_contact_info = """\
 U 7
