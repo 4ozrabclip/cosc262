@@ -1,3 +1,4 @@
+import math
 ################################################# QUESTION 1 #####################################################################################
 
 # from collections import deque    
@@ -28,7 +29,7 @@
 
 #         while Q:
 #             u = Q.popleft()
-#             for v in adj_list[u]:
+#             for v in adj_list[u]: #no weight for this reference to later questions
 #                 if state[v] == "undiscovered":
 #                     state[v] = "discovered"
 #                     parent_array[v] = u
@@ -75,7 +76,7 @@
 #             source = int(line[0])
 #             dest = int(line[1])
 #             adj_list[source].append(dest)
-#             adj_list[dest].append((source))
+#             adj_list[dest].append((source))  ## undirected 
 
 #         return adj_list
 
@@ -118,74 +119,56 @@
 
 ########################################## QUESTION 3 #############################################################################################
 
-from collections import deque
-def adjacency_list(data):
-        if len(data) == 0:
-            return []
+# def adjacency_list(data):
+#         if len(data) == 0:
+#             return []
 
-        lines = data.splitlines()
-        list_graph_str = [e.split() for e in lines]
-        vertices = int(list_graph_str[0][1])
-        adj_list = [[] for _ in range(vertices)]
+#         lines = data.splitlines()
+#         list_graph_str = [e.split() for e in lines]
+#         vertices = int(list_graph_str[0][1])
+#         adj_list = [[] for _ in range(vertices)]
 
-        for line in list_graph_str[1:]:
-            source = int(line[0])
-            dest = int(line[1])
-            adj_list[source].append(dest)
-            adj_list[dest].append((source))
+#         for line in list_graph_str[1:]:
+#             source = int(line[0])
+#             dest = int(line[1])
+#             adj_list[source].append(dest)
+#             # adj_list[dest].append((source))   # use this if its undirected
 
-        return adj_list
+#         return adj_list
 
-# def bfs_loop(adj_list, Q, state):
-#     while Q:
-#         u = Q.popleft()
+
+# def topological_sort(adj_list, start):
+#     vertices = len(adj_list)
+#     parent = [None] * vertices
+#     state = ['unvisited'] * vertices
+#     state[start] = 'visited'
+
+#     topological_stack = []
+
+#     def dfs_loop(u):
 #         for v in adj_list[u]:
-#             if state[v] == "undiscovered":
-#                 state[v] = "discovered"
-#                 Q.append(v)
-def dfs_tree(adj_list, start):
-    vertices = len(adj_list)
-    state = ['unvisited'] * vertices
-    parent = [None] * vertices
-    state[start] = 'visited'
+#             if state[v] == 'unvisited':
+#                 state[v] = 'visited'
+#                 parent[v] = u
+#                 dfs_loop(v)
+#         state[u] = 'processed'
+#         topological_stack.append(u)
+    
+#     for v in range(len(adj_list)):
+#         if state[v] != 'processed':
+#             dfs_loop(v)
 
-    def dfs_loop(u):
-        for v in adj_list[u]:
-            if state[v] == 'unvisited':
-                state[v] = 'visited'
-                parent[v] = u
-                dfs_loop(v)
-        state[u] = 'processed'
-    dfs_loop(start)
-    return parent
+#     return topological_stack
 
-# def tree_path(parent, s, t):
-#         if s == t:
-#             return [s]
-#         elif t == None:
-#             return "No solution!"
-#         else:
-#             shortest_path = tree_path(parent, s, parent[t])
-#             if type(shortest_path) == str:
-#                 return shortest_path
-#             shortest_path.append(t)
-#             return shortest_path
 
-def build_order(dependencies):
+# def build_order(dependencies):
         
-    adj_list = adjacency_list(dependencies)
-    dfs = dfs_tree(adj_list, 0)
+#     adj_list = adjacency_list(dependencies)
+#     dfs = topological_sort(adj_list, 0)[::-1]    ###  dependencies seems like it would be LIFO / dfs
 
-    for n in len(adj_list):
-         
+#     return dfs
 
-    return dfs
+############################### QUESTION 4 ########################################################################################################
 
-
-dependencies = """\
-D 3
-1 2
-0 2
-"""
-
-print(build_order(dependencies) in [[0, 1, 2], [1, 0, 2]])
+def which_segments(city_map):
+    pass
