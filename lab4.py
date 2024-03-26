@@ -175,10 +175,10 @@ def dijkstra(adj_list, start):
     return parent, d
 
 graph_string = """\
-U 4 W
-0 2 5
-0 3 2
-3 2 2
+U 3 W
+0 1 1
+2 1 2
+2 0 4
 """
 
 print(dijkstra(adjacency_list(graph_string), 0))

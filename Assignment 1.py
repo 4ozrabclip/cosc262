@@ -169,6 +169,80 @@ import math
 #     return dfs
 
 ############################### QUESTION 4 ########################################################################################################
+def adjacency_list(graph_str):
+    if len(graph_str) == 0:
+        return []
+    
+    lines = graph_str.splitlines()
+    list_graph = [e.split() for e in lines]
 
-def which_segments(city_map):
-    pass
+    n = int(list_graph[0][1])
+
+    result = [[] for _ in range(n)]
+
+    for line in list_graph[1:]:
+        u = int(line[0])
+        v = int(line[1])
+        w = int(line[2]) 
+
+        result[u].append((v, w))
+        result[v].append((u, w)) #undirected
+
+    return result
+
+def next_vertex(in_tree, distance):
+    closest = None
+    def_value = math.inf
+
+    for v in range(len(in_tree)):
+        if not in_tree[v] and distance[v] <= def_value:
+            closest = v
+            def_value = distance[v]
+
+    return closest
+
+
+def which_segments(city_map, start=0):
+    adj_list = adjacency_list(city_map)
+    
+    n = len(adj_list)
+    in_tree = [False] * n
+    d = [math.inf] * n
+    parent = [None] * n
+    
+    d[start] = 0
+
+    result = []
+
+    while not all(in_tree):
+        u = next_vertex(in_tree, d)
+        in_tree[u] = True
+        for v, w in adj_list[u]:
+            if not in_tree[v] and d[v] > w:
+                d[v] = w 
+                parent[v] = u
+    used_array = []
+
+    for i in range(n):
+        if parent[i] is not None:
+            if parent[i] < i:
+                result.append((parent[i], i))
+            else:
+                result.append((i, parent[i]))
+            # used_array.append(parent[i])
+    return result
+
+
+ 	
+
+city_map = """\
+U 4 W
+0 1 5
+1 3 5
+3 2 3
+2 0 5
+0 3 2
+1 2 1
+"""
+
+print(which_segments(city_map))
