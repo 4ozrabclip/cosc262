@@ -169,6 +169,85 @@ import math
 #     return dfs
 
 ########################################## QUESTION 4 #############################################################################################
+# def adjacency_list(graph_str):
+#     if len(graph_str) == 0:
+#         return []
+    
+#     lines = graph_str.splitlines()
+#     list_graph = [e.split() for e in lines]
+
+#     n = int(list_graph[0][1])
+
+#     result = [[] for _ in range(n)]
+
+#     for line in list_graph[1:]:
+#         u = int(line[0])
+#         v = int(line[1])
+#         w = int(line[2]) 
+
+#         result[u].append((v, w))
+#         result[v].append((u, w)) #undirected
+
+#     return result
+
+# def next_vertex(in_tree, distance):
+#     closest = None
+#     def_value = math.inf
+
+#     for v in range(len(in_tree)):
+#         if not in_tree[v] and distance[v] <= def_value:
+#             closest = v
+#             def_value = distance[v]
+
+#     return closest
+
+
+# def which_segments(city_map, start=0):
+#     adj_list = adjacency_list(city_map)
+    
+#     n = len(adj_list)
+#     in_tree = [False] * n
+#     d = [math.inf] * n
+#     parent = [None] * n
+    
+#     d[start] = 0
+
+#     result = []
+
+#     while not all(in_tree):
+#         u = next_vertex(in_tree, d)
+#         in_tree[u] = True
+#         for v, w in adj_list[u]:
+#             if not in_tree[v] and d[v] > w:
+#                 d[v] = w 
+#                 parent[v] = u
+#     used_array = []
+
+#     for i in range(n):
+#         if parent[i] is not None:
+#             if parent[i] < i:
+#                 result.append((parent[i], i))
+#             else:
+#                 result.append((i, parent[i]))
+#             # used_array.append(parent[i])
+#     return result
+
+
+ 	
+
+# city_map = """\
+# U 4 W
+# 0 1 5
+# 1 3 5
+# 3 2 3
+# 2 0 5
+# 0 3 2
+# 1 2 1
+# """
+
+# print(which_segments(city_map))
+
+################################################# QUESTION 5 #####################################################################################
 def adjacency_list(graph_str):
     if len(graph_str) == 0:
         return []
@@ -183,12 +262,44 @@ def adjacency_list(graph_str):
     for line in list_graph[1:]:
         u = int(line[0])
         v = int(line[1])
-        w = int(line[2]) 
+        w = int(line[2])
 
         result[u].append((v, w))
-        result[v].append((u, w)) #undirected
+        result[v].append((u, w))
 
     return result
+
+
+
+def min_capacity(city_map, depot_position):
+    adj_list = adjacency_list(city_map)
+    reverse_adj = transpose(adj_list)
+    forward_distance = dijkstra(adj_list, depot_position)
+    reverse_distance = dijkstra(reverse_adj, depot_position)
+    
+    max_battery_usage = 0
+
+    for i in range(len(adj_list)):
+        total_distance = forward_distance[i] + reverse_distance[i]
+        battery_usage = (total_distance * 3) // 2
+        battery_usage_with_margin = (battery_usage * 4) // 3
+        max_battery_usage = max(max_battery_usage, battery_usage_with_margin)
+    return max_battery_usage
+
+def dijkstra(adj_list, start):
+    n = len(adj_list)
+    in_tree = [False] * n
+    d = [math.inf] * n
+    
+    d[start] = 0
+
+    while not all(in_tree):
+        u = next_vertex(in_tree, d)
+        in_tree[u] = True
+        for v, w in adj_list[u]:
+            if not in_tree[v] and (d[u] + w) < d[v]:
+                d[v] = d[u] + w 
+    return d
 
 def next_vertex(in_tree, distance):
     closest = None
@@ -201,48 +312,26 @@ def next_vertex(in_tree, distance):
 
     return closest
 
+def transpose(adj_list):
+    if len(adj_list) == 0:
+        return []
+        
+    result = [[] for _ in range(len(adj_list))]
 
-def which_segments(city_map, start=0):
-    adj_list = adjacency_list(city_map)
-    
-    n = len(adj_list)
-    in_tree = [False] * n
-    d = [math.inf] * n
-    parent = [None] * n
-    
-    d[start] = 0
+    for source, neighbours in enumerate(adj_list):
+        for neighbour, w in neighbours:
+            result[neighbour].append((source, w))
 
-    result = []
-
-    while not all(in_tree):
-        u = next_vertex(in_tree, d)
-        in_tree[u] = True
-        for v, w in adj_list[u]:
-            if not in_tree[v] and d[v] > w:
-                d[v] = w 
-                parent[v] = u
-    used_array = []
-
-    for i in range(n):
-        if parent[i] is not None:
-            if parent[i] < i:
-                result.append((parent[i], i))
-            else:
-                result.append((i, parent[i]))
-            # used_array.append(parent[i])
     return result
-
-
- 	
 
 city_map = """\
 U 4 W
-0 1 5
-1 3 5
-3 2 3
-2 0 5
+0 2 5
 0 3 2
-1 2 1
+3 2 1
 """
 
-print(which_segments(city_map))
+print(min_capacity(city_map, 0))
+print(min_capacity(city_map, 1))
+print(min_capacity(city_map, 2))
+print(min_capacity(city_map, 3))
